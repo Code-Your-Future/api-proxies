@@ -1,7 +1,7 @@
-const server = require('express')();
+const app = require('express')();
 const githubClient = require('./lib/github-client');
 
-server.get('*', (req, res) => {
+app.get('*', (req, res) => {
 	if (process.env.PROXY_TO === 'github') {
 		return githubClient.fetchUrl(req.originalUrl)
 			.then(json => res.json(json))
@@ -16,3 +16,6 @@ server.get('*', (req, res) => {
 		res.sendStatus(500);
 	}
 })
+
+app.listen(process.env.PORT || 3002)
+
